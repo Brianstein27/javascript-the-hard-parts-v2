@@ -237,17 +237,40 @@ function dateStamp(func) {
 
 // CHALLENGE 12
 function censor() {
+  const pairs = {};
+  function returnFunction(...params) {
+    if (params.length > 2 || params.length < 1) {
+      return "Max 2 params pls";
+    } else if (params.length > 1) {
+      pairs[params[0]] = params[1];
+    } else if (params.length === 1) {
+      let string = params[0];
+      for (const key in pairs) {
+        string = string.replace(key, pairs[key]);
+      }
+      return string;
+    }
+  }
 
+  return returnFunction;
 }
 
 // /*** Uncomment these to check your work! ***/
 // const changeScene = censor();
-// changeScene('dogs', 'cats');
-// changeScene('quick', 'slow');
-// console.log(changeScene('The quick, brown fox jumps over the lazy dogs.')); // => should log 'The slow, brown fox jumps over the lazy cats.'
+// changeScene("dogs", "cats");
+// changeScene("quick", "slow");
+// console.log(changeScene("The quick, brown fox jumps over the lazy dogs.")); // => should log 'The slow, brown fox jumps over the lazy cats.'
 
 // CHALLENGE 13
-function createSecretHolder(secret) { }
+function createSecretHolder(secret) {
+  let heldSecret = secret;
+  return {
+    getSecret: () => {
+      console.log(heldSecret);
+    },
+    setSecret: (newSecret) => (heldSecret = newSecret),
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // obj = createSecretHolder(5)
@@ -256,7 +279,15 @@ function createSecretHolder(secret) { }
 // obj.getSecret() // => returns 2
 
 // CHALLENGE 14
-function callTimes() { }
+function callTimes() {
+  let timesCalled = 0;
+  function returnFunction() {
+    timesCalled++;
+    console.log(timesCalled);
+  }
+
+  return returnFunction;
+}
 
 // /*** Uncomment these to check your work! ***/
 // let myNewFunc1 = callTimes();
@@ -267,7 +298,23 @@ function callTimes() { }
 // myNewFunc2(); // => 2
 
 // CHALLENGE 15
-function roulette(num) { }
+function roulette(num) {
+  let timesCalled = 0;
+  function returnFunction() {
+    if (timesCalled > num - 1) {
+      timesCalled++;
+      return "pick a number to play again";
+    } else if (timesCalled === num - 1) {
+      timesCalled++;
+      return "win";
+    } else {
+      timesCalled++;
+      return "spin";
+    }
+  }
+
+  return returnFunction;
+}
 
 // /*** Uncomment these to check your work! ***/
 // const play = roulette(3);
@@ -278,7 +325,26 @@ function roulette(num) { }
 // console.log(play()); // => should log 'pick a number to play again'
 
 // CHALLENGE 16
-function average() { }
+function average() {
+  let numbers = [];
+  let average = 0;
+  function returnFunction(...params) {
+    if (params.length === 0) {
+      if (numbers.length === 0) {
+        return average;
+      } else {
+        average = numbers.reduce((a, b) => a + b) / numbers.length;
+        return average;
+      }
+    } else {
+      numbers.push(params[0]);
+      average = numbers.reduce((a, b) => a + b) / numbers.length;
+      return average;
+    }
+  }
+
+  return returnFunction;
+}
 
 // /*** Uncomment these to check your work! ***/
 // const avgSoFar = average();
