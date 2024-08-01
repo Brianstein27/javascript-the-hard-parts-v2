@@ -356,7 +356,23 @@ function average() {
 // console.log(avgSoFar()); // => should log 8
 
 // CHALLENGE 17
-function makeFuncTester(arrOfTests) { }
+function makeFuncTester(arrOfTests) {
+  let elementPairs = arrOfTests;
+  let testResult = false;
+
+  function functionTester(callback) {
+    for (const elementPair of elementPairs) {
+      if (callback(elementPair[0]) === elementPair[1]) {
+        testResult = true;
+      } else {
+        testResult = false;
+      }
+    }
+    return testResult;
+  }
+
+  return functionTester;
+}
 
 // /*** Uncomment these to check your work! ***/
 // const capLastTestCases = [];
@@ -370,26 +386,84 @@ function makeFuncTester(arrOfTests) { }
 // console.log(shouldCapitalizeLast(capLastAttempt2)); // => should log true
 
 // CHALLENGE 18
-function makeHistory(limit) { }
+function makeHistory(limit) {
+  const savedStrings = [];
+
+  function returnFunction(string) {
+    if (savedStrings.length < 2 && string !== "undo") {
+      savedStrings.push(string);
+      return `${string} done`;
+    } else if (savedStrings.length === 2 && string !== "undo") {
+      savedStrings.shift();
+      savedStrings.push(string);
+      return `${string} done`;
+    } else if (savedStrings.length > 0 && string === "undo") {
+      poppedString = savedStrings.pop();
+      return `${poppedString} undone`;
+    } else if (savedStrings.length === 0 && string === "undo") {
+      return "nothing to undo";
+    }
+  }
+
+  return returnFunction;
+}
 
 // /*** Uncomment these to check your work! ***/
 // const myActions = makeHistory(2);
-// console.log(myActions('jump')); // => should log 'jump done'
-// console.log(myActions('undo')); // => should log 'jump undone'
-// console.log(myActions('walk')); // => should log 'walk done'
-// console.log(myActions('code')); // => should log 'code done'
-// console.log(myActions('pose')); // => should log 'pose done'
-// console.log(myActions('undo')); // => should log 'pose undone'
-// console.log(myActions('undo')); // => should log 'code undone'
-// console.log(myActions('undo')); // => should log 'nothing to undo'
+// console.log(myActions("jump")); // => should log 'jump done'
+// console.log(myActions("undo")); // => should log 'jump undone'
+// console.log(myActions("walk")); // => should log 'walk done'
+// console.log(myActions("code")); // => should log 'code done'
+// console.log(myActions("pose")); // => should log 'pose done'
+// console.log(myActions("undo")); // => should log 'pose undone'
+// console.log(myActions("undo")); // => should log 'code undone'
+// console.log(myActions("undo")); // => should log 'nothing to undo'
 
 // CHALLENGE 19
-function blackjack(array) { }
+function blackjack(array) {
+  const cards = array;
+  function dealer(number1, number2) {
+    let timesCalled = 0;
+    let playerSum = 0;
+    let bust = false;
+    function player() {
+      if (bust === true) {
+        return "you are done!";
+      } else if (playerSum > 21) {
+        bust = true;
+        return "bust";
+      } else if (timesCalled === 0) {
+        timesCalled++;
+        playerSum = number1 + number2;
+        if (playerSum < 22) {
+          return playerSum;
+        } else {
+          bust = true;
+          return "bust";
+        }
+      } else {
+        playerSum += cards.shift();
+        timesCalled++;
+        if (playerSum < 22) {
+          return playerSum;
+        } else {
+          bust = true;
+          return "bust";
+        }
+      }
+    }
+    return player;
+  }
+
+  return dealer;
+}
 
 // /*** Uncomment these to check your work! ***/
 
-// /*** DEALER ***/
-// const deal = blackjack([2, 6, 1, 7, 11, 4, 6, 3, 9, 8, 9, 3, 10, 4, 5, 3, 7, 4, 9, 6, 10, 11]);
+/*** DEALER ***/
+const deal = blackjack([
+  2, 6, 1, 7, 11, 4, 6, 3, 9, 8, 9, 3, 10, 4, 5, 3, 7, 4, 9, 6, 10, 11,
+]);
 
 // /*** PLAYER 1 ***/
 // const i_like_to_live_dangerously = deal(4, 5);
