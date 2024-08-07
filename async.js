@@ -12,9 +12,15 @@ function testMe() {
 // testMe(); // what order should these log out? Howdy or Partnah first?
 
 /* CHALLENGE 2 */
+function greet() {
+  console.log("welcome");
+}
+function goodbye() {
+  console.log("goodbye");
+}
 
 function delayedGreet() {
-  // ADD CODE HERE
+  setTimeout(greet, 3000);
 }
 // Uncomment the following line to check your work!
 // delayedGreet(); // should log (after 3 seconds): welcome
@@ -23,6 +29,8 @@ function delayedGreet() {
 
 function helloGoodbye() {
   // ADD CODE HERE
+  greet();
+  setTimeout(goodbye, 2000);
 }
 // Uncomment the following line to check your work!
 // helloGoodbye(); // should log: hello // should also log (after 3 seconds): good bye
@@ -30,23 +38,53 @@ function helloGoodbye() {
 /* CHALLENGE 4 */
 
 function brokenRecord() {
-  // ADD CODE HERE
+  function hi() {
+    setTimeout(() => {
+      console.log("hi");
+      hi();
+    }, 1000);
+  }
+
+  hi();
 }
+
+function brokenRecord2() {
+  setInterval(() => {
+    console.log("hi");
+  }, 1000);
+}
+
 // Uncomment the following line to check your work!
 // brokenRecord(); // should log (every second): hi again
 
 /* CHALLENGE 5 */
 
 function limitedRepeat() {
-  // ADD CODE HERE
+  let count = 0;
+  const intervalID = setInterval(() => {
+    console.log("hi");
+    count++;
+
+    if (count > 4) {
+      clearInterval(intervalID);
+    }
+  }, 1000);
 }
 // Uncomment the following line to check your work!
 // limitedRepeat(); // should log (every second, for 5 seconds): hi for now
 
 /* CHALLENGE 6 */
 
-function everyXsecsForYsecs() {
-  // ADD CODE HERE
+function everyXsecsForYsecs(callback, interval, duration) {
+  let count = 0;
+  const intervalID = setInterval(() => {
+    callback();
+    count++;
+
+    if (count === duration) {
+      clearInterval(intervalID);
+    }
+  }, interval * 1000);
 }
 // Uncomment the following lines to check your work!
 // function theEnd() {
@@ -56,7 +94,22 @@ function everyXsecsForYsecs() {
 
 /* CHALLENGE 7 */
 
-function delayCounter(target, wait) {}
+function delayCounter(target, wait) {
+  let count = 1;
+
+  function delay() {
+    const intervalID = setInterval(() => {
+      console.log(count);
+      count++;
+
+      if (count > target) {
+        clearInterval(intervalID);
+      }
+    }, wait);
+  }
+  
+  return delay;
+}
 
 // UNCOMMENT THESE TO TEST YOUR WORK!
 // const countLogger = delayCounter(3, 1000)
