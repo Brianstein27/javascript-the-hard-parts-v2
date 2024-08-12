@@ -68,13 +68,16 @@ function PersonConstructor() {
 }
 
 // /********* Uncomment this line to test your work! *********/
-const simon = new PersonConstructor();
-simon.greet(); // -> Logs 'hello'
+// const simon = new PersonConstructor();
+// simon.greet(); // -> Logs 'hello'
 
 /*** CHALLENGE 6 ***/
 
 function personFromConstructor(name, age) {
-  
+  const newPerson = new PersonConstructor();
+  newPerson.name = name;
+  newPerson.age = age;
+  return newPerson;
 }
 
 const mike = personFromConstructor("Mike", 30);
@@ -85,7 +88,9 @@ const mike = personFromConstructor("Mike", 30);
 // mike.greet(); //-> Logs 'hello'
 
 /*** CHALLENGE 7 ***/
-// add code here
+PersonConstructor.prototype.introduce = function () {
+  console.log(`Hi my name is ${this.name}`);
+};
 
 // mike.introduce(); // -> Logs 'Hi, my name is Mike'
 
@@ -96,11 +101,13 @@ const mike = personFromConstructor("Mike", 30);
 /*** CHALLENGE 8 ***/
 
 class PersonClass {
-  constructor() {
-    // add code here
+  constructor(name) {
+    this.name = name;
   }
 
-  // add code here
+  greet = () => {
+    console.log("hello");
+  };
 }
 
 // /********* Uncomment this line to test your work! *********/
@@ -109,7 +116,15 @@ const george = new PersonClass();
 
 /*** CHALLENGE 9 ***/
 
-// add code here
+class DeveloperClass extends PersonClass {
+  constructor(name) {
+    super(name);
+  }
+
+  introduce() {
+    console.log("Hello World, my name is " + this.name);
+  }
+}
 
 // /********* Uncomment these lines to test your work! *********/
 // const thai = new DeveloperClass('Thai', 32);
@@ -139,15 +154,21 @@ function userFactory(name, score) {
 const adminFunctionStore = {
   // add code here
 };
+Object.setPrototypeOf(adminFunctionStore, userFunctionStore);
 
 /*** CHALLENGE 11, 12, 13 ***/
 
 function adminFactory(name, score) {
-  // add code here
+  const newAdmin = userFactory(name, score);
+  newAdmin.type = "Admin";
+  Object.setPrototypeOf(newAdmin, adminFunctionStore);
+  return newAdmin;
 }
 
 /*** CHALLENGE 14 ***/
-/* Put code here for a method called sharePublicMessage*/
+adminFunctionStore.sharePublicMessage = function () {
+  console.log("Welcome users!");
+};
 
 const adminFromFactory = adminFactory("Eva", 5);
 
@@ -177,7 +198,7 @@ const robotMixin = {
 
 let robotFido = new Dog();
 
-// robotFido = /* Put code here to give Fido robot skills */;
+Object.assign(robotFido, robotMixin);
 
 // /********* Uncomment to test your work! *********/
 // robotFido.speak() // -> Logs "I am made of metal"
